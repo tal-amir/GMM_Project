@@ -1,0 +1,241 @@
+#LyX 2.0 created this file. For more info see http://www.lyx.org/
+\lyxformat 413
+\begin_document
+\begin_header
+\textclass article
+\use_default_options true
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize 12
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry true
+\use_amsmath 1
+\use_esint 1
+\use_mhchem 1
+\use_mathdots 1
+\cite_engine basic
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 2cm
+\topmargin 2cm
+\rightmargin 2cm
+\bottommargin 2cm
+\headheight 2cm
+\headsep 2cm
+\footskip 2cm
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+\noindent
+Full Image restoration [and some games with a single gaussian]
+\end_layout
+
+\begin_layout Author
+\noindent
+Haggai Maron & Tal Amir
+\end_layout
+
+\begin_layout Part*
+\noindent
+1 Weekness of one Gaussian model
+\end_layout
+
+\begin_layout Standard
+\noindent
+What can we model if we use only one Gaussian? how does it compare to the
+ 200 Gaussians model? We will check this in 2 ways:
+\end_layout
+
+\begin_layout Standard
+\noindent
+1.
+ Compare random patches that are generated from 1 Gaussian Distribution
+ vs.
+ 200 Gaussina Distribution:
+\end_layout
+
+\begin_layout Standard
+\noindent
+MOG samples:
+\end_layout
+
+\begin_layout Standard
+\noindent
+\begin_inset Graphics
+	filename C:/Users/haggaim/Dropbox/MoG Project/Second Assignment/multiple_Gaussians_sample 1.jpeg
+	width 3cm
+	height 3cm
+	keepAspectRatio
+
+\end_inset
+
+ 
+\begin_inset Graphics
+	filename C:/Users/haggaim/Dropbox/MoG Project/Second Assignment/multiple_Gaussians_sample 2.jpeg
+	width 3cm
+	height 3cm
+	keepAspectRatio
+
+\end_inset
+
+ 
+\begin_inset Graphics
+	filename C:/Users/haggaim/Dropbox/MoG Project/Second Assignment/multiple_Gaussians_sample 3.jpeg
+	width 3cm
+	height 3cm
+	keepAspectRatio
+
+\end_inset
+
+ 
+\begin_inset Graphics
+	filename C:/Users/haggaim/Dropbox/MoG Project/Second Assignment/multiple_Gaussians_sample 4.jpeg
+	width 3cm
+	height 3cm
+	keepAspectRatio
+
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Standard
+\noindent
+One Gaussian Sample:
+\end_layout
+
+\begin_layout Standard
+\noindent
+\begin_inset Graphics
+	filename C:/Users/haggaim/Dropbox/MoG Project/Second Assignment/one_Gaussian_sample 1.jpeg
+	width 3cm
+	height 3cm
+	keepAspectRatio
+
+\end_inset
+
+ 
+\begin_inset Graphics
+	filename C:/Users/haggaim/Dropbox/MoG Project/Second Assignment/one_Gaussian_sample 2.jpeg
+	width 3cm
+	height 3cm
+	keepAspectRatio
+
+\end_inset
+
+ 
+\begin_inset Graphics
+	filename C:/Users/haggaim/Dropbox/MoG Project/Second Assignment/one_Gaussian_sample 3.jpeg
+	width 3cm
+	height 3cm
+	keepAspectRatio
+
+\end_inset
+
+ 
+\begin_inset Graphics
+	filename C:/Users/haggaim/Dropbox/MoG Project/Second Assignment/one_Gaussian_sample 4.jpeg
+	width 3cm
+	height 3cm
+	keepAspectRatio
+
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Standard
+\noindent
+Results
+\end_layout
+
+\begin_layout Standard
+\noindent
+It is quite clear that there are pure directed textures such as lines in
+ the MoG samples, while the samples from the single Gaussian distribution
+ posess these textures.
+\end_layout
+
+\begin_layout Standard
+\noindent
+2.
+ Clean the same patch with the two model and check the difference in the
+ PSNR:
+\end_layout
+
+\begin_layout Part*
+\noindent
+2 Full Image denoising
+\end_layout
+
+\begin_layout Standard
+\noindent
+\begin_inset Graphics
+	filename C:/Users/haggaim/Dropbox/collage.tiff
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\noindent
+noisy psnr=22.1104 noisy rmse=19.9996 denoised psnr=25.8107 denoised rmse=13.0619
+ filtered psnr=26.0458 filtered rmse=12.7131
+\end_layout
+
+\begin_layout Standard
+\noindent
+another example:
+\end_layout
+
+\begin_layout Standard
+\noindent
+noisy psnr=22.4789 noisy rmse=19.1689 denoised psnr=25.6765 denoised rmse=13.2653
+ filtered psnr=24.1597 filtered rmse=15.7963 
+\end_layout
+
+\end_body
+\end_document

@@ -1,0 +1,11 @@
+function [dimg] = fullImageDenoise(img, GS, noiseSTD)
+
+[m n] = size(img);
+patches = im2patch(img);
+nPatches = size(patches,2);
+
+for patchIdx = 1:nPatches
+    
+end
+
+end

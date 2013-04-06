@@ -1,0 +1,4 @@
+Test name: after_change
+
+Noisy PSNR: -27.329637  MSE: 23.107742
+Denoise PSNR: -16.656603  MSE: 6.876923

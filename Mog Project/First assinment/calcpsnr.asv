@@ -1,0 +1,4 @@
+function y = calcpsnr(noisyimage,image)
+
+% calculate mse
+mse=sum((noisyimage-image).^2)

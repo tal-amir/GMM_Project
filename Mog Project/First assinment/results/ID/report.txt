@@ -1,0 +1,6 @@
+Test name: ID
+
+
+Noisy PSNR: 24.545944  MSE: 228.289529
+
+Denoise PSNR: 15.558663  MSE: 1808.065149

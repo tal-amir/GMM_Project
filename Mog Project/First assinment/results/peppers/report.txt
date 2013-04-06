@@ -1,0 +1,6 @@
+Test name: peppers
+
+
+Noisy PSNR: 18.391600 MSE: 941.716903
+
+Denoise PSNR: 20.305012  MSE: 606.148722

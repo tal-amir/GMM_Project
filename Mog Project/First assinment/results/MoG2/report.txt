@@ -1,0 +1,6 @@
+Test name: MoG2
+
+
+Noisy PSNR: 20.207040  MSE: 619.978065
+
+Denoise PSNR: 22.283907  MSE: 384.317046

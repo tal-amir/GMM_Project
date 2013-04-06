@@ -1,0 +1,22 @@
+function [npatch,dpatch,npsnr,dpsnr] = testgmm(patch,GS,sigma,testname)
+
+patch = im2double(patch);
+npatch = imnoise(patch,'gaussian',0,sigma^2);
+npsnr = calcpsnr(255*patch,255*npatch);
+dpatch = patchmmse(vec2mat(npatch,1),GS,sigma);
+dpatch = vec2mat(dpatch,8);
+dpsnr=calcpsnr(255*patch,255*dpatch);
+
+collage = [patch zeros(8,1) npatch; zeros(1,17); patch zeros(8,1) dpatch];
+
+collage = collage - min(collage(:));
+collage = collage / max(collage(:));
+
+mkdir(['./results/testname)
+imwrite(collage, 'collage.png');
+
+fprintf('Noisy PSNR: %f\n', npsnr);
+fprintf('Denoise PSNR: %f\n', dpsnr);
+
+imshow(collage,[]); hold on;
+title('First row: Original patch vs noisy second row: original vs denoised patch');

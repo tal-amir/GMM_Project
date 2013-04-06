@@ -1,0 +1,6 @@
+Test name: UpperTriangular
+
+
+Noisy PSNR: 23.824859  MSE: 269.522175
+
+Denoise PSNR: 20.408397  MSE: 591.889534

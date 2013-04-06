@@ -1,0 +1,6 @@
+Test name: SmoothUpperTriangular
+
+
+Noisy PSNR: 22.886766  MSE: 334.505860
+
+Denoise PSNR: 24.863643  MSE: 212.185667

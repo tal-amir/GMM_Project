@@ -1,0 +1,6 @@
+Test name: MoG1
+
+
+Noisy PSNR: 20.121831  MSE: 632.262255
+
+Denoise PSNR: 22.948736  MSE: 329.766651

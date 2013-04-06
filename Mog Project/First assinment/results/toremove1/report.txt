@@ -1,0 +1,4 @@
+Test name: toremove1
+
+Noisy PSNR: 22.793854  MSE: 18.486194
+Denoise PSNR: 24.811356  MSE: 14.654546

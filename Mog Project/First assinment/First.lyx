@@ -1,0 +1,706 @@
+#LyX 2.0 created this file. For more info see http://www.lyx.org/
+\lyxformat 413
+\begin_document
+\begin_header
+\textclass article
+\use_default_options true
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize 12
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry true
+\use_amsmath 1
+\use_esint 0
+\use_mhchem 1
+\use_mathdots 1
+\cite_engine basic
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 2cm
+\topmargin 2cm
+\rightmargin 2cm
+\bottommargin 2cm
+\headheight 2cm
+\headsep 2cm
+\footskip 2cm
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation skip
+\defskip 0bp
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Cleaning an image with GMM prior
+\end_layout
+
+\begin_layout Author
+Haggai Maron & Tal Amir
+\end_layout
+
+\begin_layout Part
+Derivation of the formula
+\end_layout
+
+\begin_layout Standard
+We are working on 
+\begin_inset Formula $8\times8$
+\end_inset
+
+ patches and assume that 
+\begin_inset Formula $y$
+\end_inset
+
+ is a noisy patch we see, 
+\begin_inset Formula $x$
+\end_inset
+
+ is the clean patch and 
+\begin_inset Formula $k$
+\end_inset
+
+ is the index of the Gaussian from which 
+\begin_inset Formula $x$
+\end_inset
+
+ was generated.
+\end_layout
+
+\begin_layout Standard
+We introduce the following random variables:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+X\in\mathbb{R}^{64}
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+Y\in\mathbb{R}^{64}
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+K\in\left\{ 1,...,k\right\} 
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+X|K=j\sim N(\mu_{k},\Sigma_{k})
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+Y=X+N
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+N\sim N(0,\sigma^{2}I_{64})
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+K=j\, w.p\,\pi_{k}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+We would like to use this model in order to get an estimation of the clean
+ image 
+\begin_inset Formula $x$
+\end_inset
+
+ given the noisy patch 
+\begin_inset Formula $y$
+\end_inset
+
+.
+ If we use the MMSE estimation we know that 
+\begin_inset Formula 
+\[
+x_{MMSE}=E[X|Y=y]=\int_{\mathbb{R}^{64}}x\cdot f_{X|Y}(x|y)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+We try to simplify this formula using the following identities:
+\begin_inset Formula 
+\[
+f_{X|Y}(x|y)=\frac{f_{X,Y}(x,y)}{f_{Y}(y)}
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+f_{X|Y,K}(x|y,j)=\frac{f_{X,Y,K}(x,y,j)}{f_{Y,K}(y,j)}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+f_{K|Y}(j|y)=\frac{f_{Y,K}(y,j)}{f_{Y}(y)}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+so
+\begin_inset Formula 
+\[
+f_{X|Y,K}(x|y,j)\cdot f_{K|Y}(k|y)=\frac{f_{X,Y,K}(x,y,j)}{f_{Y}(y)}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+which implies 
+\begin_inset Formula 
+\[
+\sum_{j=1}^{k}f_{X|Y,K}(x|y,j)\cdot f_{K|Y}(j|y)=\sum_{j=1}^{k}\frac{f_{X,Y,K}(x,y,j)}{f_{Y}(y)}=\frac{f_{X,Y}(x,y)}{f_{Y}(y)}=f_{X|Y}(x|y)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+so we got 
+\begin_inset Formula 
+\[
+x_{MMSE}=\int x\cdot f_{X|Y}(x|y)dx=
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\sum_{j=1}^{k}\left[f_{K|Y}(j|y)\int x\cdot f_{X|Y,K}(x|y,j)dx\right]=
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\sum_{j=1}^{k}\left[f_{K|Y}(j|y)\cdot E[X|Y=y,K=j]\right]
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+and
+\begin_inset Formula 
+\[
+E[X|Y=y,K=j]=
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\mu_{j}+\Sigma_{j}\left[\Sigma_{j}+\sigma^{2}I_{64}\right]^{-1}\left(y-\mu_{j}\right)=
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\mu_{j}+\frac{1}{\sigma^{2}}\left[\frac{1}{\sigma^{2}}I+\Sigma_{j}^{-1}\right]^{-1}\left(y-\mu_{j}\right)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+So we are left with calculating the following quantity:
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ 
+\begin_inset Formula $f_{K|Y}(j|y)$
+\end_inset
+
+:
+\begin_inset Formula 
+\[
+f_{K|Y}(j|y)=\frac{f_{Y|K}(y|j)f_{K}\left(j\right)}{f_{Y}(y)}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+We know that 
+\begin_inset Formula 
+\[
+Y|K=j\sim N(\mu_{j},\Sigma_{j}+\sigma^{2}I_{64})
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+so
+\begin_inset Formula 
+\[
+f_{Y|K}(y|j)=N\left(y;\mu_{j},\Sigma_{j}+\sigma^{2}I_{64}\right)=
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\frac{1}{\left(2\pi\right)^{32}\det\left(\Sigma_{j}+\sigma^{2}I_{64}\right)^{\frac{1}{2}}}\exp\left(-\frac{1}{2}\left(y-\mu_{j}\right)^{T}\left[\Sigma_{j}+\sigma^{2}I_{64}\right]^{-1}\left(y-\mu_{j}\right)\right)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+and the only thing we need to calculate is 
+\begin_inset Formula $f_{Y}(y)$
+\end_inset
+
+ which is given by 
+\begin_inset Formula 
+\[
+f_{Y}(y)=\sum_{j=i}^{k}f_{Y|K}(y|j)f_{K}\left(j\right)
+\]
+
+\end_inset
+
+We shall use our results in order to obtain the expression for 
+\begin_inset Formula $\hat{x}_{MMSE}:$
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\hat{x}_{MMSE}=\sum_{j=1}^{k}\left[f_{K|Y}(j|y)\cdot E[X|Y=y,K=j]\right]=
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\sum_{j=1}^{k}\left[\frac{f_{Y|K}(y|j)f_{K}\left(j\right)}{f_{Y}(y)}\cdot\left(\mu_{j}+\frac{1}{\sigma^{2}}\left[\frac{1}{\sigma^{2}}I+\Sigma_{j}^{-1}\right]^{-1}\left(y-\mu_{j}\right)\right)\right]=
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\frac{1}{f_{Y}(y)}\cdot\sum_{j=1}^{k}\left[f_{Y|K}(y|j)f_{K}\left(j\right)\cdot\left(\mu_{j}+\frac{1}{\sigma^{2}}\left[\frac{1}{\sigma^{2}}I+\Sigma_{j}^{-1}\right]^{-1}\left(y-\mu_{j}\right)\right)\right]=
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\frac{1}{f_{Y}(y)}\sum_{j=1}^{k}\left[\pi_{j}\cdot N\left(y;\mu_{j},\Sigma_{j}+\sigma^{2}I_{64}\right)\left(\mu_{j}+\frac{1}{\sigma^{2}}\left[\frac{1}{\sigma^{2}}I+\Sigma_{j}^{-1}\right]^{-1}\left(y-\mu_{j}\right)\right)\right]
+\]
+
+\end_inset
+
+Where
+\begin_inset Formula 
+\[
+f_{Y}(y)=\sum_{s=1}^{k}\pi_{s}\cdot N\left(y;\mu_{s},\Sigma_{s}+\sigma^{2}I_{64}\right)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Note that the formula 
+\begin_inset Formula 
+\[
+\hat{x}_{MMSE}=\sum_{j=1}^{k}\left[f_{K|Y}(j|y)\cdot E[X|Y=y,K=j]\right]
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+makes sense - it is a weighted average of the conditional means according
+ to a specific Gaussian, where the weight is the responsibility of the Gaussian
+ to the observed patch 
+\begin_inset Formula $y$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Part
+Results
+\end_layout
+
+\begin_layout Standard
+We have tested this Algorithm on 7 patches: 2 randomly chosen from a natural
+ image, two were generated from the GMM learnt distribution and 2 were synthetic
+ally generated by us.
+\end_layout
+
+\begin_layout Standard
+For every patch we present a 2 row image of the following structure:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\left[\begin{array}{cc}
+original & noisy\\
+original & denoised
+\end{array}\right]
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+We added noise with 'imnoise' function using 
+\begin_inset Formula $\sigma=0.1$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Natural patches
+\end_layout
+
+\begin_layout Standard
+We used two patches from a natural image [peppers.png] and used the algorithm
+ on them.
+\end_layout
+
+\begin_layout Subsection
+peppers
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename results/peppers/collage.png
+	width 4cm
+	height 4cm
+	keepAspectRatio
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Noisy patch PSNR: 18.391600 MSE: 941.716903
+\end_layout
+
+\begin_layout Standard
+Denoised patch PSNR: 20.305012 MSE: 606.148722 
+\end_layout
+
+\begin_layout Subsection
+peppers2
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename results/peppers2/collage.png
+	width 4cm
+	height 4cm
+	keepAspectRatio
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Noisy patch PSNR: 21.396915 MSE: 471.399222
+\end_layout
+
+\begin_layout Standard
+Denoised patch PSNR: 25.380485 MSE: 188.378731 
+\end_layout
+
+\begin_layout Section
+Patches from the learnt distribution
+\end_layout
+
+\begin_layout Subsection
+MoG1
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename results/MoG1/collage.png
+	width 4cm
+	height 4cm
+	keepAspectRatio
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Noisy patch PSNR: 20.121831 MSE: 632.262255
+\end_layout
+
+\begin_layout Standard
+Denoised patch PSNR: 22.948736 MSE: 329.766651 
+\end_layout
+
+\begin_layout Subsection
+MoG2
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename results/MoG2/collage.png
+	width 4cm
+	height 4cm
+	keepAspectRatio
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Noisy patch PSNR: 20.207040 MSE: 619.978065
+\end_layout
+
+\begin_layout Standard
+Denoised patch PSNR: 22.283907 MSE: 384.317046 
+\end_layout
+
+\begin_layout Section
+Synthetic patches
+\end_layout
+
+\begin_layout Subsection
+ID
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename results/ID/collage.png
+	width 4cm
+	height 4cm
+	keepAspectRatio
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Noisy patch PSNR: 24.545944 MSE: 228.289529
+\end_layout
+
+\begin_layout Standard
+Denoised patch PSNR: 15.558663 MSE: 1808.065149 
+\end_layout
+
+\begin_layout Subsection
+Upper Triangular
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename results/UpperTriangular/collage.png
+	width 4cm
+	height 4cm
+	keepAspectRatio
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Noisy patch PSNR: 23.824859 MSE: 269.522175
+\end_layout
+
+\begin_layout Standard
+Denoised patch PSNR: 20.408397 MSE: 591.889534 
+\end_layout
+
+\begin_layout Subsection
+Smooth upper triangular
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename results/SmoothUpperTriangular/collage.png
+	width 4cm
+	height 4cm
+	keepAspectRatio
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Noisy patch PSNR: 22.886766 MSE: 334.505860
+\end_layout
+
+\begin_layout Standard
+Denoised patch PSNR: 24.863643 MSE: 212.185667 
+\end_layout
+
+\begin_layout Part
+Discussion
+\end_layout
+
+\begin_layout Standard
+It looks like the learnt prior's ability to denoise both natural patches
+ and patches that were generated from the distribution itself is good.
+ Its performance on patches that we generated for the test [i.e.
+ the id patch and upper triangular patch] was not good and the algorithm
+ actually degraded the noisy patch by adding 'smoothness' to it.
+ In order to test this we added another test on an upper triangular matrix
+ that was convolved with a blur kernel, and on this patch [smooth upper
+ triangular] the algorithm worked well [so it indeed looks like our prior
+ prefers smooth patches in some way].
+\end_layout
+
+\end_body
+\end_document
