@@ -4,12 +4,13 @@ function xmmse = multipatchmmse(patches,GS,sigma)
 dc = repmat(mean(patches,1),[n 1]);
 patches = patches - dc;
 
+
 xmmse=zeros(size(patches));
 
 weightVec = zeros(200, nPatches);
 
 for i=1:numel(GS.mixweights)
-    weightVec(i,:) = mvnpdf(patches', GS.means(:,i)',GS.covs(:,:,i))';
+    weightVec(i,:) = mvnpdf(patches', GS.means(:,i)',GS.covs(:,:,i)+sigma^2*eye(64))';
 end
     
 fy=GS.mixweights' * weightVec;
