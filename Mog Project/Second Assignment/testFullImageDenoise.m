@@ -15,3 +15,7 @@ sep = zeros(m,1);
 imshow([img sep nimg sep dimg sep fimg]);
 collage = [img sep nimg sep dimg sep fimg];
 imwrite(collage,'collage.tiff');
+
+echo 'Tal is in the house!'
+
+
