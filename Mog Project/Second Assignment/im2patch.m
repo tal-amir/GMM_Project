@@ -1,5 +1,5 @@
 function out = im2patch(img)
-
+# Tal test
 m = size(img,1);
 n = size(img,2);
 
